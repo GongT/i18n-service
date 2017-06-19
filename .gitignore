@@ -1,0 +1,18 @@
+### START MICRO-BUILD SECTION >>>
+# DO NOT EDIT THIS BY HAND
+.*
+*.tgz
+node_modules
+jspm_packages
+**/node_modules
+**/jspm_packages
+*.log
+npm-debug.log*
+coverage/
+typings
+screen.*
+!.*ignore
+!.gitinclude
+dist/
+dist-npm-package/
+### <<< END MICRO-BUILD SECTION

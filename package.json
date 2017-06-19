@@ -1,0 +1,31 @@
+{
+	"name": "@gongt/i18n-server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "microbuild build",
+		"service": "microbuild control",
+		"prepublish": "cd package && npm publish --access public --registry=https://registry.npmjs.org/"
+	},
+	"author": "",
+	"license": "WTFPL",
+	"dependencies": {
+		"@gongt/jenv-data": "latest",
+		"@gongt/ts-stl-server": "latest",
+		"@gongt/ts-stl-library": "latest",
+		"body-parser": "^1.17.2",
+		"express": "^4.15.3",
+		"i18next": "^8.4.2",
+		"i18next-express-middleware": "^1.0.5",
+		"i18next-node-mongodb-backend": "0.0.5",
+		"mongodb": "^2.2.28",
+		"mongoose": "^4.10.7",
+		"morgan": "^1.8.2",
+		"systemd-daemon": "^1.1.0"
+	},
+	"devDependencies": {
+		"@types/express": "^4.0.36",
+		"@types/node": "^7.0.31"
+	}
+}

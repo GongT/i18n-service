@@ -1,0 +1,39 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es6",
+		"lib": ["es6", "es5", "es7", "es2015"],
+		"moduleResolution": "node",
+		"noEmitOnError": true,
+		"noImplicitThis": true,
+		"noImplicitAny": false,
+		"removeComments": false,
+		"preserveConstEnums": true,
+		"experimentalDecorators": true,
+		"declaration": false,
+		"emitDecoratorMetadata": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": false,
+		"pretty": true,
+		"sourceMap": true,
+		"baseUrl": "../",
+		"typeRoots": [
+			"../node_modules/@types"
+		],
+		"types": [
+		],
+		"outDir": "../dist",
+		"rootDir": "./",
+		"paths": {
+			"@gongt/ts-stl-client": ["node_modules/@gongt/ts-stl-client"],
+			"@gongt/ts-stl-library": ["node_modules/@gongt/ts-stl-library"],
+			"@gongt/ts-stl-server": ["node_modules/@gongt/ts-stl-server"]
+		}
+	},
+	"exclude": [
+		"node_modules",
+		"build.config.ts",
+		"jspm_packages"
+	]
+}
