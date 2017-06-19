@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "microbuild build",
 		"service": "microbuild control",
-		"prepublish": "cd package && npm publish --access public --registry=https://registry.npmjs.org/"
+		"prepublish": "cd dist-npm-package && npm publish --access public --registry=https://registry.npmjs.org/"
 	},
 	"author": "",
 	"license": "WTFPL",
