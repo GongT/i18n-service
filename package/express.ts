@@ -6,7 +6,7 @@ import {Application, Router} from "express-serve-static-core";
 
 export function attachExpressApp(app: Application|Router): I18nCreator {
 	const i18n = new I18nCreator({
-		debug: true,
+		debug: false,
 	});
 	i18n.use(new LanguageList(JsonEnv.translation.langList));
 	i18n.use(new I18nExpress({}, app));
