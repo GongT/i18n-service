@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"target": "es6",
-		"lib": ["es6", "es5", "es7", "es2015"],
+		"lib": ["es6", "es5", "es7"],
 		"moduleResolution": "node",
 		"noEmitOnError": true,
 		"noImplicitThis": true,
@@ -24,7 +24,7 @@
 		"types": [
 		],
 		"outDir": "../dist",
-		"rootDir": "./",
+		"rootDir": "../",
 		"paths": {
 			"@gongt/ts-stl-client": ["node_modules/@gongt/ts-stl-client"],
 			"@gongt/ts-stl-library": ["node_modules/@gongt/ts-stl-library"],

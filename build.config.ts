@@ -30,7 +30,7 @@ build.listenPort(3818);
 
 build.startupCommand('./node_modules/.bin/ts-app-loader');
 build.shellCommand('/usr/local/bin/node');
-build.environmentVariable('MAIN_FILE', './dist/index.js');
+build.environmentVariable('MAIN_FILE', './dist/server/index.js');
 
 build.addPlugin(EPlugins.jenv);
 
