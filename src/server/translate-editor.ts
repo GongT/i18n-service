@@ -117,6 +117,7 @@ export function translationRoutes(app: Application, i18n: I18n) {
 		
 		const ret = await languageDatabase.writeKey(lng, ns, path, value);
 		
+		context._request_raw['i18n'].off('languageChanged');
 		i18n['reloadResources'](lng, ns);
 		
 		return ret;

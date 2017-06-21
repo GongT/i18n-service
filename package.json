@@ -97,7 +97,7 @@
 			"npm:safe-buffer@5.0.1": {
 				"browser": "index.js"
 			},
-			"npm:safe-buffer@5.1.0": {
+			"npm:safe-buffer@5.1.1": {
 				"browser": "index.js"
 			}
 		}
