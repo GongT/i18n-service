@@ -1,6 +1,6 @@
 import {DataModel} from "@gongt/ts-stl-server/database/mongodb";
 import {SchemaDefinition, SchemaTypes} from "mongoose";
-import {TranslateResource, TranslateResourceHolder} from "../../client/defines";
+import {TranslateResourceHolder} from "../../client/defines";
 
 const ISchema: SchemaDefinition = {
 	_id: SchemaTypes.ObjectId,
@@ -10,24 +10,36 @@ const ISchema: SchemaDefinition = {
 };
 
 export class LanguageDatabase extends DataModel<TranslateResourceHolder> {
+	get tableName() {
+		return 'TranslationResource';
+	}
+	
 	protected createSchema() {
 		return ISchema;
 	}
 	
-	writeKey(language: string, namespace: string, keyPath: string, value: string) {
-		return this.update({
+	async writeKey(language: string, namespace: string, keyPath: string, value: string) {
+		const ret = await this.update({
 			language,
 			namespace,
 		}, {
 			$set: {
-				[keyPath]: value,
+				['data.' + keyPath]: value,
 			},
 		}, {
 			upsert: true,
 		});
+		
+		this.debug('update key: language  = %s', language);
+		this.debug('            namespace = %s', namespace);
+		this.debug('            path      = %s', keyPath);
+		this.debug('            value     = %s', value);
+		this.debug('            result    = %j', ret);
+		
+		return ret;
 	}
 	
-	async readLanguage(language: string, namespace: string): Promise<TranslateResource> {
+	async readLanguage(language: string, namespace: string): Promise<TranslateResourceHolder> {
 		const data = await this.getOne({
 			language,
 			namespace,
@@ -35,6 +47,10 @@ export class LanguageDatabase extends DataModel<TranslateResourceHolder> {
 		if (data) {
 			return <any>data;
 		}
-		return {};
+		return {
+			language,
+			namespace,
+			data: {},
+		};
 	}
 }

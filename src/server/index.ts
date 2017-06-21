@@ -13,6 +13,7 @@ import {I18nMongodb} from "./library/mongodb";
 import {translationRoutes} from "./translate-editor";
 
 const databaseUrl = JsonEnv.DataBaseUrlTemplate.replace('%DATABASE-NAME%', 'Translation');
+initDefaultDatabaseConnection(databaseUrl);
 
 const cors = new CrossDomainMiddleware;
 cors.allowCredentials(true);
@@ -43,9 +44,7 @@ app.get('/', (req: Request&I18nRequest, res) => {
 	res.send(`<h1>${req.t('xxx')}</h1>`)
 });
 
-translationRoutes(app);
-
-initDefaultDatabaseConnection(databaseUrl);
+translationRoutes(app, n);
 
 const p = Promise.all([
 	waitDatabaseToConnect(),

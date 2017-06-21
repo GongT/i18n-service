@@ -1,13 +1,14 @@
 import {BaseComponent} from "@gongt/ts-stl-client/react/stateless-component";
-import {Word} from "./word";
 import * as React from "react";
 import {CSSProperties, ReactElement} from "react";
 import {TranslateResource} from "./defines";
+import {Word} from "./word";
 
 export interface GroupProps {
 	title: string;
 	values: TranslateResource;
 	path?: string;
+	query: {lng: string; ns: string;};
 }
 
 const groupStyle: CSSProperties = {
@@ -46,9 +47,9 @@ export class Group extends BaseComponent<GroupProps> {
 			const v = this.props.values[k];
 			
 			if (typeof v === 'string') {
-				words.push(<Word title={k} path={subPath + k}>{v}</Word>);
+				words.push(<Word title={k} path={subPath + k} query={this.props.query}>{v}</Word>);
 			} else {
-				subs.push(<Group title={k} path={subPath + k} values={v}/>);
+				subs.push(<Group title={k} path={subPath + k} values={v} query={this.props.query}/>);
 			}
 		});
 		

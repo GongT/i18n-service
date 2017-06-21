@@ -70,7 +70,7 @@ export class I18nCreator {
 	
 	private inst: i18n.I18n;
 	
-	createInstance() {
+	createInstance(): i18n.I18n {
 		if (this.inst) {
 			return this.inst;
 		}
