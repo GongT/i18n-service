@@ -25,4 +25,7 @@ build.config.ts
 dist/
 dist/npm-package/
 public/client/
+public/bundles/client.js
+public/bundles/full.js
+public/bundles/dependencies.js
 ### <<< END MICRO-BUILD SECTION

@@ -10,8 +10,8 @@ import {Router} from "express";
 import {Application} from "express-serve-static-core";
 import {I18n} from "i18next";
 import {LanguageDatabase} from "./library/raw-database";
-const basicAuth = require('express-basic-auth')
-;
+const basicAuth = require('express-basic-auth');
+
 export function translationRoutes(app: Application, i18n: I18n) {
 	const r = Router();
 	const baseUrl = '/editor';
