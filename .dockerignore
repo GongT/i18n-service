@@ -23,5 +23,6 @@ build.config.ts
 !.micro-build/docker/package-json
 !.micro-build/docker/plugins
 dist/
-dist-npm-package/
+dist/npm-package/
+public/client/
 ### <<< END MICRO-BUILD SECTION

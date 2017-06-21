@@ -24,7 +24,7 @@
 		],
 		"types": [
 		],
-		"outDir": "../dist-npm-package",
+		"outDir": "../../dist/npm-package",
 		"rootDir": "./",
 		"paths": {
 			"@gongt/ts-stl-client": ["node_modules/@gongt/ts-stl-client"],

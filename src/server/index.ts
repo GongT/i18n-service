@@ -1,4 +1,4 @@
-import "@gongt/jenv-data/global";
+import {JsonEnv} from "@gongt/jenv-data";
 import {REQUEST_METHOD} from "@gongt/ts-stl-library/request/request-method";
 import {bootExpressApp} from "@gongt/ts-stl-server/boot/express-init";
 import {initServiceWait} from "@gongt/ts-stl-server/boot/init-systemd-service";
@@ -10,6 +10,7 @@ import * as logger from "morgan";
 import {I18nCreator, LanguageList} from "../package/library/base";
 import {I18nExpress, I18nRequest} from "../package/library/express";
 import {I18nMongodb} from "./library/mongodb";
+import {translationRoutes} from "./translate-editor";
 
 const databaseUrl = JsonEnv.DataBaseUrlTemplate.replace('%DATABASE-NAME%', 'Translation');
 
@@ -41,6 +42,8 @@ const n = i18n.createInstance();
 app.get('/', (req: Request&I18nRequest, res) => {
 	res.send(`<h1>${req.t('xxx')}</h1>`)
 });
+
+translationRoutes(app);
 
 initDefaultDatabaseConnection(databaseUrl);
 

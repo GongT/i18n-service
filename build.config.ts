@@ -35,12 +35,16 @@ build.environmentVariable('MAIN_FILE', './dist/server/index.js');
 build.addPlugin(EPlugins.jenv);
 
 build.addPlugin(EPlugins.typescript, {
-	source: 'server',
+	source: 'src/server',
 	target: 'dist',
 });
 build.addPlugin(EPlugins.typescript, {
-	source: 'package',
-	target: 'dist-npm-package',
+	source: 'src/package',
+	target: 'dist/npm-package',
+});
+build.addPlugin(EPlugins.typescript, {
+	source: 'src/client',
+	target: 'public/client',
 });
 
 // build.volume('translations', '/data/translations');

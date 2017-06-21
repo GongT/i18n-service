@@ -23,7 +23,7 @@
 		],
 		"types": [
 		],
-		"outDir": "../dist",
+		"outDir": "../../dist",
 		"rootDir": "../",
 		"paths": {
 			"@gongt/ts-stl-client": ["node_modules/@gongt/ts-stl-client"],

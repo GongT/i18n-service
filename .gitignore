@@ -14,5 +14,6 @@ screen.*
 !.*ignore
 !.gitinclude
 dist/
-dist-npm-package/
+dist/npm-package/
+public/client/
 ### <<< END MICRO-BUILD SECTION
