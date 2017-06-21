@@ -6,7 +6,7 @@ import {FetchBackend} from "./library/fetch";
 
 export function attachExpressApp(app: Application|Router, extra: Partial<I18nExpressConfig> = {}): I18nCreator {
 	const i18n = new I18nCreator({
-		debug: false,
+		debug: extra.debug || false,
 	});
 	
 	i18n.use(new LanguageList(JsonEnv.translation.langList));

@@ -1,6 +1,8 @@
 import {IS_SERVER} from "@gongt/ts-stl-library/check-environment";
 import * as i18n from "i18next";
 
+export const COMMON_NAMESPACE = 'common';
+
 export interface I18nPlugin {
 	__plugin(options: i18n.Options, use: (module: any) => void);
 	__modify?(orignal: i18n.I18n): i18n.I18n|void;
@@ -33,14 +35,23 @@ export class I18nCreator {
 			returnEmptyString: false,
 			returnNull: false,
 			returnObjects: false,
+			ns: [],
 		};
 		
 		if (options) {
-			Object.assign(this.options, options);
+			Object.assign(this.options, options, {
+				fallbackNS: COMMON_NAMESPACE,
+			});
 		}
 		
-		this.options['nonExplicitWhitelist'] = 'en';
+		this.registerNamespace(COMMON_NAMESPACE);
+		
+		this.options['nonExplicitWhitelist'] = false;
 		// this.options['initImmediate'] = IS_CLIENT;
+	}
+	
+	registerNamespace(...nss: string[]) {
+		(<string[]>this.options.ns).push(...nss);
 	}
 	
 	use(plug: I18nPlugin) {
@@ -64,12 +75,12 @@ export class I18nCreator {
 			return this.inst;
 		}
 		
-		console.info('[i18n] i18next create instance.');
 		for (let plugin of this.plugins) {
 			if (plugin.__init) {
 				plugin.__init(this.options);
 			}
 		}
+		console.info('[i18n] i18next create instance: %j', this.options);
 		
 		let inst = i18n.createInstance();
 		
@@ -77,6 +88,7 @@ export class I18nCreator {
 			inst = inst.use(module);
 		}
 		
+		this.options['nonExplicitWhitelist'] = false;
 		inst.init(this.options, (e, t) => {
 			if (e) {
 				this.resolver[1](e);
@@ -114,7 +126,13 @@ export class LanguageList implements I18nPlugin {
 		}
 		
 		if (!options.fallbackLng) {
-			options.fallbackLng = this.defaultLang || this.languageList[0];
+			const defLang: string = this.defaultLang || this.languageList[0]
+			options.fallbackLng = {
+				'zh-cn': ['zh'],
+				'zh-hans': ['zh'],
+				'zh-tw': ['zh'],
+				"default": [defLang],
+			};
 		}
 	}
 }

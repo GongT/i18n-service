@@ -25,8 +25,10 @@ const defaultCookie: CookieOption = {
 };
 
 export interface I18nExpressConfig {
-	ignoreRoutes: string[],
-	removeLngFromUrl: boolean,
+	ignoreRoutes?: string[];
+	removeLngFromUrl?: boolean;
+	debug?: boolean;
+	projectName: string;
 }
 
 export class I18nExpress implements I18nPlugin {
@@ -35,12 +37,20 @@ export class I18nExpress implements I18nPlugin {
 	private config: I18nExpressConfig;
 	
 	constructor(config: Partial<I18nExpressConfig>, app?: Application|Router) {
+		if (!config.projectName) {
+			config.projectName = process.env.PROJECT_NAME;
+		}
+		if (!config.projectName) {
+			throw new Error('no projectName set.');
+		}
 		if (app) {
 			this.attachedExpress = app;
 		}
 		this.config = Object.assign({
 			ignoreRoutes: [],
 			removeLngFromUrl: false,
+			debug: false,
+			projectName: null,
 		}, config);
 	}
 	
@@ -54,9 +64,14 @@ export class I18nExpress implements I18nPlugin {
 	
 	__plugin(options: i18n.Options, use: (module: any) => void) {
 		use(LanguageDetector);
+		options.defaultNS = this.config.projectName;
+		(<string[]>options.ns).push(this.config.projectName);
 		options.detection = {
 			order: ['querystring', 'cookie', 'header'],
 			caches: ['cookie'],
+			lookupQuerystring: 'language',
+			// lookupSession: 'lng',
+			// lookupPath: 'lng',
 			lookupCookie: this.cookieConfig.name || defaultCookie.name,
 			cookieDomain: this.cookieConfig.domain || defaultCookie.domain,
 			lookupFromPathIndex: -1,
