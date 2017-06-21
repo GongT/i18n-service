@@ -1,4 +1,12 @@
+import {globalVar} from "./global";
 export function FetchApi(url: string, options: RequestInit) {
+	options.credentials = 'include';
+	
+	if (!options.headers) {
+		options.headers = new Headers();
+	}
+	options.headers.append('Authorization', globalVar.get('Authorization'));
+	
 	const p = fetch(url, options).then((response) => {
 		if (response.status === 200) {
 			return response.json();

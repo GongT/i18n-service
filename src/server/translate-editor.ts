@@ -21,6 +21,8 @@ export function translationRoutes(app: Application, i18n: I18n) {
 	const namespaceList: string[] = [];
 	
 	app.use(baseUrl, basicAuth({
+		challenge: true,
+		realm: 'translation webpage',
 		users: {
 			'translate': 'wbZ!#$ASsm0%j701*8wW',
 		},
@@ -43,6 +45,7 @@ export function translationRoutes(app: Application, i18n: I18n) {
 		context.global.set('WriteApi', WriteApi);
 		context.global.set('languageList', languageList);
 		context.global.set('namespaceList', namespaceList);
+		context.global.set('Authorization', context.request.header('Authorization'));
 	});
 	html.plugin(jspm);
 	provideWithExpress(app, jspm);
