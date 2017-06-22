@@ -40,13 +40,38 @@ export class LanguageDatabase extends DataModel<TranslateResourceHolder> {
 	}
 	
 	async readLanguage(language: string, namespace: string): Promise<TranslateResourceHolder> {
-		const data = await this.getOne({
+		let data = await this.findOne({
 			language,
 			namespace,
 		});
 		if (data) {
 			return <any>data;
 		}
+		
+		if (language !== 'en') {
+			const enData = await this.findOne({
+				language: 'en',
+				namespace,
+			});
+			if (enData) {
+				this.debug('not found translate %s@%s, copy from en', namespace, language);
+				const copy = this.create();
+				copy.namespace = enData.namespace;
+				copy.data = enData.data;
+				copy.language = language;
+				const d = await this.insert(copy);
+				
+				data = await this.findOne({
+					language,
+					namespace,
+				});
+				
+				if (data) {
+					return <any>data;
+				}
+			}
+		}
+		
 		return {
 			language,
 			namespace,

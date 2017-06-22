@@ -90,6 +90,16 @@ export class I18nExpress implements I18nPlugin {
 		this.attachedExpress.post('/_i18n/resources.json', urlencoded({
 			extended: false,
 		}), missingKeyHandler(orignal));
+		
+		this.attachedExpress.get('/_i18n/reload', (req, res, next) => {
+			if (req.query.lng && req.query.ns) {
+				req['i18n'].off('languageChanged');
+				orignal['reloadResources'](req.query.lng, req.query.ns);
+				res.header(200).send('OK');
+			} else {
+				res.header(400).send('INPUT');
+			}
+		});
 	}
 }
 
