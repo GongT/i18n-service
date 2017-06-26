@@ -1,3 +1,4 @@
+import {JspmCdnPlugin} from "@gongt/jspm";
 import {ApiRequest, ApiResponse, STATUS_CODE} from "@gongt/ts-stl-library/request/protocol";
 import {ERequestType, RawBodyType} from "@gongt/ts-stl-library/request/request";
 import {RequestError} from "@gongt/ts-stl-library/request/request-error";
@@ -5,7 +6,6 @@ import {waitDatabaseToConnect} from "@gongt/ts-stl-server/database/mongodb";
 import {JsonApiHandler} from "@gongt/ts-stl-server/express/api-handler";
 import {HtmlContainer} from "@gongt/ts-stl-server/express/middlewares/html-render";
 import {provideWithExpress} from "@gongt/ts-stl-server/express/middlewares/well-known-provider";
-import {JspmPackagePlugin} from "@gongt/ts-stl-server/express/render/jspm";
 import {Router} from "express";
 import {Application} from "express-serve-static-core";
 import {I18n} from "i18next";
@@ -32,7 +32,8 @@ export function translationRoutes(app: Application, i18n: I18n) {
 	const html = new HtmlContainer();
 	html.addHead(`<title>Microduino Translate</title>`);
 	html.addHead(`<base href="${baseUrl}/">`);
-	const jspm = new JspmPackagePlugin({
+	console.log(require.resolve('@gongt/jenv-data'));
+	const jspm = new JspmCdnPlugin({
 		packageName: 'client',
 	});
 	html.addHead(`<style type="text/css">
