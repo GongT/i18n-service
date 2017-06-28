@@ -1,4 +1,4 @@
-import {DataModel} from "@gongt/ts-stl-server/database/mongodb";
+import {DataModel, MyDocument} from "@gongt/ts-stl-server/database/mongodb";
 import {SchemaDefinition, SchemaTypes} from "mongoose";
 import {TranslateResourceHolder} from "../../client/defines";
 
@@ -9,7 +9,10 @@ const ISchema: SchemaDefinition = {
 	data: SchemaTypes.Mixed,
 };
 
-export class LanguageDatabase extends DataModel<TranslateResourceHolder> {
+export interface TranslateResourceDocument extends TranslateResourceHolder, MyDocument {
+}
+
+export class LanguageDatabase extends DataModel<TranslateResourceDocument> {
 	get tableName() {
 		return 'TranslationResource';
 	}

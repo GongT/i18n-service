@@ -9,6 +9,7 @@ import {provideWithExpress} from "@gongt/ts-stl-server/express/middlewares/well-
 import {Router} from "express";
 import {Application} from "express-serve-static-core";
 import {I18n} from "i18next";
+import {TranslateResource} from "../client/defines";
 import {LanguageDatabase} from "./library/raw-database";
 const basicAuth = require('express-basic-auth');
 
@@ -77,7 +78,12 @@ export function translationRoutes(app: Application, i18n: I18n) {
 		lng: string;
 		ns: string;
 	}
-	const read = new JsonApiHandler<LanguageGet, ApiResponse>(ERequestType.TYPE_GET, '/' + ReadApi);
+	interface LanguageResponse extends ApiResponse {
+		lng: string;
+		ns: string;
+		payload: TranslateResource;
+	}
+	const read = new JsonApiHandler<LanguageGet, LanguageResponse>(ERequestType.TYPE_GET, '/' + ReadApi);
 	read.handleArgument('ns').fromGet().filter((d) => {
 		return namespaceList.includes(d);
 	});
