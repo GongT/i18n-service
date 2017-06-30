@@ -27,7 +27,7 @@
 		"i18next-node-fs-backend": "^1.0.0",
 		"i18next-node-mongodb-backend": "0.0.5",
 		"mongodb": "^2.2.29",
-		"mongoose": "^4.10.7",
+		"mongoose": "^4.11.0",
 		"morgan": "^1.8.2",
 		"systemd-daemon": "^1.1.0"
 	},
@@ -42,7 +42,7 @@
 		"@types/i18next-xhr-backend": "^1.2.2",
 		"@types/mongodb": "^2.2.6",
 		"@types/mongoose": "^4.7.18",
-		"@types/node": "^8.0.1"
+		"@types/node": "^8.0.6"
 	},
 	"jspm": {
 		"name": "client",
