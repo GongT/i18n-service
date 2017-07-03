@@ -69,8 +69,8 @@ const fetcher: AjaxFunction = function (url, options: AjaxFunctionOptions, callb
 			});
 		}
 		
-		return callback('', res);
-	});
+		return callback(null, res);
+	}, (err) => callback(null, err));
 };
 
 let ajaxFunc: AjaxFunction;
