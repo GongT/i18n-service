@@ -56,6 +56,4 @@ build.addPlugin(EPlugins.jspm_bundle, {
 // build.volume('translations', '/data/translations');
 
 build.onConfig((isBuild) => {
-	const config = helper.createConfig(`ts`);
-	// config.write('xxxxx');
 });
