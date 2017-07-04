@@ -8,4 +8,8 @@ tsc -p src/package
 
 mkdir -p dist/npm-package/
 
+cd package-contents/
+ncu -a -u
+cd ..
+
 cp -rv package-contents/. dist/npm-package/
