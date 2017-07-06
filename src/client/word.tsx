@@ -1,4 +1,6 @@
 import {BindThis, StatefulBaseComponent} from "@gongt/ts-stl-client/react/stateless-component";
+import {isomorphicGlobal} from "@gongt/ts-stl-library/check-environment";
+import {GlobalVariable} from "@gongt/ts-stl-library/pattern/global-page-data";
 import * as React from "react";
 import {CSSProperties} from "react";
 import {FetchApi} from "./fetch-api";
@@ -148,12 +150,17 @@ export class Word extends StatefulBaseComponent<WordProps, State> {
 		}
 	}
 	
+	@BindThis
+	titleDoubleClick() {
+		GlobalVariable.get(isomorphicGlobal, 'globalEvent').emit('change', this.props.query.ns + ':' + this.props.path);
+	}
+	
 	render() {
 		return (
 			<div style={{...parentStyle, ...this.state.styles}}
 				onMouseEnter={this.onMouseEnter}
 				onMouseLeave={this.onMouseLeave}>
-				<div style={titleStyle}>{this.props.title}</div>
+				<div style={titleStyle} onDoubleClick={this.titleDoubleClick}>{this.props.title}</div>
 				<span>➡</span>
 				<div style={valueStyle}>
 					<textarea

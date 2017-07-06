@@ -1,6 +1,7 @@
 import {BindThis, StatefulBaseComponent} from "@gongt/ts-stl-client/react/stateless-component";
 import * as React from "react";
 import {CSSProperties} from "react";
+import {AnyEdit} from "./any";
 import {TranslateResource} from "./defines";
 import {FetchApi} from "./fetch-api";
 import {globalVar} from "./global";
@@ -31,15 +32,7 @@ const textSelList = [
 const parentStyle: CSSProperties = {
 	display: 'flex',
 	flexDirection: 'row',
-};
-const childStyle: CSSProperties = {
-	flexGrow: 1,
-	display: 'flex',
-	flexDirection: 'row',
 	margin: '6px 18px',
-};
-const labelStyle: CSSProperties = {
-	width: '38%',
 };
 const optionStyle: CSSProperties = {
 	flexGrow: 1,
@@ -67,54 +60,61 @@ export class MainHolder extends StatefulBaseComponent<any, IState> {
 	render() {
 		if (this.state.editorReady) {
 			return <div>
+				{this.renderAnyEdit()}
 				{this.renderSelector()}
 				{this.renderEditor()}
 			</div>;
 		} else if (this.state.loading) {
 			return <div>
+				{this.renderAnyEdit()}
 				{this.renderSelector()}
 				<h1>loading...</h1>
 			</div>;
 		} else if (this.state.failed) {
 			return <div>
+				{this.renderAnyEdit()}
 				{this.renderSelector(true)}
 				<h1>Failed! {this.state.failed}.</h1>
 			</div>;
 		} else {
 			return <div>
+				{this.renderAnyEdit()}
 				{this.renderSelector(true)}
 				{this.renderEmpty()}
 			</div>;
 		}
 	}
 	
+	renderAnyEdit() {
+		return (<div>
+			<div style={{height: '1.5em'}} />
+			<AnyEdit />
+			<hr/>
+		</div>);
+	}
+	
 	renderSelector(enabled: boolean = false) {
 		return (
 			<div>
 				<div style={parentStyle}>
-					<div style={childStyle}>
-						<label htmlFor="selectLang" style={labelStyle}>language:</label>
-						<select
-							disabled={!enabled}
-							onChange={e => this.setState({'currentLanguage': e.target.value})}
-							id="selectLang" style={optionStyle}>
-							${langSelList}
-						</select>
-					</div>
-					<div style={childStyle}>
-						<label htmlFor="selectNamespace" style={labelStyle}>text list:</label>
-						<select
-							disabled={!enabled}
-							onChange={e => this.setState({'currentNamespace': e.target.value})}
-							id="selectNamespace" style={optionStyle}>
-							${textSelList}
-						</select>
-					</div>
-					<div style={{...childStyle, flexGrow: 0}}>
-						<button onClick={this.startLoading}>OK</button>
-					</div>
-				</div>
-				<div style={{textAlign: 'center'}}>
+					<label htmlFor="selectLang">language:</label>
+					<select
+						disabled={!enabled}
+						onChange={e => this.setState({'currentLanguage': e.target.value})}
+						id="selectLang" style={optionStyle}>
+						${langSelList}
+					</select>
+					&nbsp;&nbsp;&nbsp;
+					<label htmlFor="selectNamespace">text list:</label>
+					<select
+						disabled={!enabled}
+						onChange={e => this.setState({'currentNamespace': e.target.value})}
+						id="selectNamespace" style={optionStyle}>
+						${textSelList}
+					</select>
+					&nbsp;&nbsp;&nbsp;
+					<button onClick={this.startLoading}>OK</button>
+					<div>&nbsp;|&nbsp;</div>
 					<button
 						disabled={enabled}
 						onClick={this.release}

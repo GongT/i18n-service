@@ -1,4 +1,6 @@
-import {BaseComponent} from "@gongt/ts-stl-client/react/stateless-component";
+import {BaseComponent, BindThis} from "@gongt/ts-stl-client/react/stateless-component";
+import {isomorphicGlobal} from "@gongt/ts-stl-library/check-environment";
+import {GlobalVariable} from "@gongt/ts-stl-library/pattern/global-page-data";
 import * as React from "react";
 import {CSSProperties, ReactElement} from "react";
 import {TranslateResource} from "./defines";
@@ -30,6 +32,13 @@ const parentPathStyle: CSSProperties = {
 };
 
 export class Group extends BaseComponent<GroupProps> {
+	@BindThis
+	titleDoubleClick() {
+		if (this.props.path) {
+			GlobalVariable.get(isomorphicGlobal, 'globalEvent').emit('change', this.props.query.ns + ':' + this.props.path + '.');
+		}
+	}
+	
 	render() {
 		const words: ReactElement<any>[] = [];
 		const subs: ReactElement<any>[] = [];
@@ -54,7 +63,7 @@ export class Group extends BaseComponent<GroupProps> {
 		});
 		
 		return (<div style={groupStyle} className="group">
-			<h3 style={{margin: 0}}>
+			<h3 style={{margin: 0}} onDoubleClick={this.titleDoubleClick}>
 				<span style={parentPathStyle}>{parentPath}</span>
 				{this.props.title}
 			</h3>
