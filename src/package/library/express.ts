@@ -1,3 +1,4 @@
+import {GlobalVariable} from "@gongt/ts-stl-library/pattern/global-page-data";
 import {createLogger, LEVEL} from "@gongt/ts-stl-server/debug";
 import {RequestContext} from "@gongt/ts-stl-server/express/base/context";
 import {urlencoded} from "body-parser";
@@ -31,12 +32,18 @@ export interface I18nExpressConfig {
 	projectName: string;
 }
 
+export interface Options {
+	list: string[];
+	backend: string;
+}
+
 export class I18nExpress implements I18nPlugin {
 	private attachedExpress: Application|Router;
 	private cookieConfig: CookieOption = defaultCookie;
 	private config: I18nExpressConfig;
+	private options: Options;
 	
-	constructor(config: Partial<I18nExpressConfig>, app?: Application|Router) {
+	constructor(config: Partial<I18nExpressConfig>, options: Options, app?: Application|Router) {
 		if (!config.projectName) {
 			config.projectName = process.env.PROJECT_NAME;
 		}
@@ -52,6 +59,9 @@ export class I18nExpress implements I18nPlugin {
 			debug: false,
 			projectName: null,
 		}, config);
+		this.config.ignoreRoutes.push('/_i18n');
+		
+		this.options = options;
 	}
 	
 	cookiesSettings(settings: CookieOption) {
@@ -83,7 +93,20 @@ export class I18nExpress implements I18nPlugin {
 			throw new Error('I18nExpress: you have not attach the express middleware.');
 		}
 		debug('register i18next handler middleware');
-		this.attachedExpress.use(handle(orignal, this.config));
+		this.attachedExpress.use(handle(orignal, this.config), (req: any, res, next) => {
+			if (req.i18n) {
+				req.i18n.off('languageChanged');
+				const passVal = new GlobalVariable(res);
+				
+				passVal.set({
+					languageConfigFromServer: {
+						language: req.language,
+						options: this.options,
+					},
+				});
+			}
+			next();
+		});
 		
 		debug('export resources on /_i18n/resources.json');
 		this.attachedExpress.get('/_i18n/resources.json', getResourcesHandler(orignal, {}));

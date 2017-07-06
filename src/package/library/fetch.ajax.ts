@@ -1,8 +1,6 @@
-import {IS_CLIENT, isomorphicGlobal} from "@gongt/ts-stl-library/check-environment";
-
 // @formatter:off
 // COPY FROM i18next-xhr-backend
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+import {isomorphicGlobal} from "@gongt/ts-stl-library/check-environment"; var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 function addQueryString(url, params) {
   if (params && (typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
@@ -73,14 +71,9 @@ const fetcher: AjaxFunction = function (url, options: AjaxFunctionOptions, callb
 	}, (err) => callback(null, err));
 };
 
-let ajaxFunc: AjaxFunction;
-if (isomorphicGlobal.hasOwnProperty('fetch')) {
-	ajaxFunc = fetcher
-} else if (IS_CLIENT) {
-	ajaxFunc = undefined; // use default - XMLHTTPRequest
-} else {
+let ajaxFunc: AjaxFunction = fetcher;
+if (!isomorphicGlobal.hasOwnProperty('fetch')) {
 	require("isomorphic-fetch");
-	ajaxFunc = fetcher;
 }
 export const ajax: AjaxFunction = ajaxFunc;
 

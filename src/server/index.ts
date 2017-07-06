@@ -34,10 +34,12 @@ i18n.use(new I18nMongodb(databaseUrl));
 
 const iexp = new I18nExpress({
 	ignoreRoutes: [
-		'/_i18n',
 		'/editor',
 		'/public',
 	],
+}, {
+	list: JsonEnv.translation.langList,
+	backend: databaseUrl,
 });
 iexp.attach(app);
 i18n.use(iexp);

@@ -10,8 +10,11 @@ export function attachExpressApp(app: Application|Router, extra: Partial<I18nExp
 	});
 	
 	i18n.use(new LanguageList(JsonEnv.translation.langList));
-	i18n.use(new I18nExpress(extra, app));
 	i18n.use(new FetchBackend(JsonEnv.translation.serverUrl));
+	i18n.use(new I18nExpress(extra, {
+		"list": JsonEnv.translation.langList,
+		"backend": JsonEnv.translation.serverUrl,
+	}, app));
 	
 	i18n.createInstance();
 	app['i18n'] = i18n;
