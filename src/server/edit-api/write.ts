@@ -32,7 +32,7 @@ write.setHandler(async (context) => {
 	const ret = await getDatabase().writeKey(lng, ns, path, value);
 	
 	context._request_raw['i18n'].off('languageChanged');
-	i18n['reloadResources'](lng, ns);
+	i18n['reloadResources'](<any>lng, ns);
 	
 	await refreshLanguageList();
 	return ret;
