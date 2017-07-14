@@ -165,7 +165,6 @@ export class Word extends StatefulBaseComponent<WordProps, State> {
 				<div style={valueStyle}>
 					<textarea
 						style={valueStyleText}
-						type="text"
 						placeholder={this.props.title}
 						defaultValue={this.props.children}
 						onChange={this.onChange}
