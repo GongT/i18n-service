@@ -14,6 +14,7 @@ export function attachExpressApp(app: Application|Router, extra: Partial<I18nExp
 	i18n.use(new I18nExpress(extra, {
 		"list": JsonEnv.translation.langList,
 		"backend": JsonEnv.translation.serverUrl,
+		
 	}, app));
 	
 	i18n.createInstance();

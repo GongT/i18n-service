@@ -1,12 +1,16 @@
-import {IS_SERVER} from "@gongt/ts-stl-library/check-environment";
+import {IS_SERVER, isomorphicGlobal} from "@gongt/ts-stl-library/check-environment";
 import * as i18n from "i18next";
 
 export const COMMON_NAMESPACE = 'common';
 
 export interface I18nPlugin {
 	__plugin(options: i18n.Options, use: (module: any) => void);
-	__modify?(orignal: i18n.I18n): i18n.I18n|void;
+	__modify?(orignal: i18n.I18n, options: i18n.Options&MyExtendOptions): i18n.I18n|void;
 	__init?(options: i18n.Options): void;
+}
+
+export interface MyExtendOptions {
+	projectName?: string;
 }
 
 export class I18nCreator {
@@ -19,8 +23,9 @@ export class I18nCreator {
 		(t: i18n.TranslationFunction) => void,
 		(e: Error) => void
 		] = [null, null];
+	public readonly currentNamespace: string;
 	
-	constructor(options?: i18n.Options) {
+	constructor(options: i18n.Options&MyExtendOptions) {
 		this.plugins = [];
 		this.modules = [];
 		this.initPromise = new Promise((resolve, reject) => {
@@ -38,13 +43,20 @@ export class I18nCreator {
 			ns: [],
 		};
 		
-		if (options) {
-			Object.assign(this.options, options, {
-				fallbackNS: COMMON_NAMESPACE,
-			});
+		if (!options.projectName && IS_SERVER) {
+			options.projectName = isomorphicGlobal.process.env.PROJECT_NAME;
 		}
+		if (!options.projectName) {
+			throw new Error('I18N: no projectName set.');
+		}
+		this.currentNamespace = options.projectName;
+		
+		Object.assign(this.options, options, {
+			fallbackNS: this.currentNamespace,
+		});
 		
 		this.registerNamespace(COMMON_NAMESPACE);
+		this.registerNamespace(this.currentNamespace);
 		
 		this.options['nonExplicitWhitelist'] = false;
 		// this.options['initImmediate'] = IS_CLIENT;
@@ -99,7 +111,7 @@ export class I18nCreator {
 		
 		for (let plugin of this.plugins) {
 			if (plugin.__modify) {
-				inst = plugin.__modify(inst) || inst;
+				inst = plugin.__modify(inst, this.options) || inst;
 			}
 		}
 		
@@ -109,6 +121,10 @@ export class I18nCreator {
 
 export class LanguageList implements I18nPlugin {
 	constructor(private languageList: string[], private defaultLang?: string) {
+	}
+	
+	get list() {
+		return this.languageList;
 	}
 	
 	setLanguageList(list: string[]) {
@@ -127,11 +143,9 @@ export class LanguageList implements I18nPlugin {
 		
 		if (!options.fallbackLng) {
 			const defLang: string = this.defaultLang || this.languageList[0]
-			options.fallbackLng = {
-				'zh-cn': ['zh'],
-				'zh-hans': ['zh'],
-				'zh-tw': ['zh'],
-				"default": [defLang],
+			options.fallbackLng = <any>{
+				'default': [defLang],
+				'0': defLang,
 			};
 		}
 	}

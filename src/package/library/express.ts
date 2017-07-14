@@ -7,6 +7,7 @@ import * as i18n from "i18next";
 import {TranslationFunction} from "i18next";
 import {getResourcesHandler, handle, LanguageDetector} from "i18next-express-middleware";
 import {I18nPlugin} from "./base";
+import {CookieOption} from "./browser";
 
 const debug = createLogger(LEVEL.INFO, 'i18n');
 
@@ -16,10 +17,6 @@ export interface I18nRequest {
 	languages: string[];
 }
 
-export interface CookieOption {
-	name: string;
-	domain: string;
-}
 const defaultCookie: CookieOption = {
 	name: 'i18n-lang',
 	domain: '',
@@ -29,7 +26,7 @@ export interface I18nExpressConfig {
 	ignoreRoutes?: string[];
 	removeLngFromUrl?: boolean;
 	debug?: boolean;
-	projectName: string;
+	cookie?: CookieOption;
 }
 
 export interface Options {
@@ -44,12 +41,6 @@ export class I18nExpress implements I18nPlugin {
 	private options: Options;
 	
 	constructor(config: Partial<I18nExpressConfig>, options: Options, app?: Application|Router) {
-		if (!config.projectName) {
-			config.projectName = process.env.PROJECT_NAME;
-		}
-		if (!config.projectName) {
-			throw new Error('no projectName set.');
-		}
 		if (app) {
 			this.attachedExpress = app;
 		}
@@ -57,11 +48,13 @@ export class I18nExpress implements I18nPlugin {
 			ignoreRoutes: [],
 			removeLngFromUrl: false,
 			debug: false,
-			projectName: null,
 		}, config);
 		this.config.ignoreRoutes.push('/_i18n');
 		
 		this.options = options;
+		if (config.cookie) {
+			this.cookiesSettings(config.cookie);
+		}
 	}
 	
 	cookiesSettings(settings: CookieOption) {
@@ -74,8 +67,6 @@ export class I18nExpress implements I18nPlugin {
 	
 	__plugin(options: i18n.Options, use: (module: any) => void) {
 		use(LanguageDetector);
-		options.defaultNS = this.config.projectName;
-		(<string[]>options.ns).push(this.config.projectName);
 		options.detection = {
 			order: ['querystring', 'cookie', 'header'],
 			caches: ['cookie'],
@@ -88,11 +79,17 @@ export class I18nExpress implements I18nPlugin {
 		};
 	}
 	
-	__modify(orignal: i18n.I18n) {
+	__modify(orignal: i18n.I18n, options) {
 		if (!this.attachedExpress) {
 			throw new Error('I18nExpress: you have not attach the express middleware.');
 		}
 		debug('register i18next handler middleware');
+		
+		const detection = {
+			cookie: this.cookieConfig,
+			qs: 'language',
+		};
+		
 		this.attachedExpress.use(handle(orignal, this.config), (req: any, res, next) => {
 			if (req.i18n) {
 				req.i18n.off('languageChanged');
@@ -101,7 +98,10 @@ export class I18nExpress implements I18nPlugin {
 				passVal.set({
 					languageConfigFromServer: {
 						language: req.language,
-						options: this.options,
+						detection,
+						fallbackLng: orignal.options.fallbackLng,
+						...this.options,
+						projectName: options.projectName,
 					},
 				});
 			}
@@ -138,7 +138,6 @@ function missingKeyHandler(i18next) {
 		if (!i18next.services.backendConnector) {
 			return res.status(404).send('i18next-express-middleware:: no backend configured');
 		}
-		console.log(req.body);
 		
 		for (let m in req.body) {
 			i18next.services.backendConnector.saveMissing(lngs, ns, m, req.body[m]);
