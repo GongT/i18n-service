@@ -1,13 +1,12 @@
 {
 	"name": "@gongt/i18n-server",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
 		"build": "microbuild build",
 		"service": "microbuild control",
-		"prepublishOnly": "bash prepare-publish-package.sh",
-		"postpublish": "cd dist/npm-package && npm publish --access public"
+		"prepublishOnly": "bash prepare-publish-package.sh"
 	},
 	"author": "",
 	"license": "WTFPL",

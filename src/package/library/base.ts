@@ -28,7 +28,7 @@ export class I18nCreator {
 		});
 		this.options = {
 			debug: false, // isDebugMode(),
-			load: 'currentOnly',
+			load: 'languageOnly',
 			lowerCaseLng: true,
 			saveMissing: IS_SERVER,
 			saveMissingTo: 'all',
