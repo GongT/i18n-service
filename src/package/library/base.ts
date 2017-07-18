@@ -4,9 +4,9 @@ import * as i18n from "i18next";
 export const COMMON_NAMESPACE = 'common';
 
 export interface I18nPlugin {
-	__plugin(options: i18n.Options, use: (module: any) => void);
-	__modify?(orignal: i18n.I18n, options: i18n.Options&MyExtendOptions): i18n.I18n|void;
-	__init?(options: i18n.Options): void;
+	__plugin(options: i18n.InitOptions, use: (module: any) => void);
+	__modify?(orignal: i18n.i18n, options: i18n.InitOptions&MyExtendOptions): i18n.i18n|void;
+	__init?(options: i18n.InitOptions): void;
 }
 
 export interface MyExtendOptions {
@@ -15,7 +15,7 @@ export interface MyExtendOptions {
 
 export class I18nCreator {
 	private modules: any[];
-	private options: i18n.Options;
+	private options: i18n.InitOptions;
 	private plugins: I18nPlugin[];
 	private initPromise: Promise<i18n.TranslationFunction>;
 	
@@ -25,7 +25,7 @@ export class I18nCreator {
 		] = [null, null];
 	public readonly currentNamespace: string;
 	
-	constructor(options: i18n.Options&MyExtendOptions) {
+	constructor(options: i18n.InitOptions&MyExtendOptions) {
 		this.plugins = [];
 		this.modules = [];
 		this.initPromise = new Promise((resolve, reject) => {
@@ -80,9 +80,9 @@ export class I18nCreator {
 		this.modules.push(module);
 	}
 	
-	private inst: i18n.I18n;
+	private inst: i18n.i18n;
 	
-	createInstance(): i18n.I18n {
+	createInstance(): i18n.i18n {
 		if (this.inst) {
 			return this.inst;
 		}
@@ -135,14 +135,14 @@ export class LanguageList implements I18nPlugin {
 		this.defaultLang = defaultLang;
 	}
 	
-	__plugin(options: i18n.Options, use: (module: any) => void) {
+	__plugin(options: i18n.InitOptions, use: (module: any) => void) {
 		options.whitelist = this.languageList.slice();
 		if (IS_SERVER) {
 			options.preload = this.languageList.slice();
 		}
 		
 		if (!options.fallbackLng) {
-			const defLang: string = this.defaultLang || this.languageList[0]
+			const defLang: string = this.defaultLang || this.languageList[0];
 			options.fallbackLng = <any>{
 				'default': [defLang],
 				'0': defLang,

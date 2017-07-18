@@ -9,7 +9,7 @@ export class I18nMongodb implements I18nPlugin {
 	constructor(private databaseUrl: string, private collection = 'TranslationResource') {
 	}
 	
-	__plugin(options: i18n.Options, use: (module: any) => void) {
+	__plugin(options: i18n.InitOptions, use: (module: any) => void) {
 		if (options.backend) {
 			throw new Error("multiple backend found, that's not supported now.");
 		}

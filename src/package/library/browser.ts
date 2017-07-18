@@ -14,7 +14,7 @@ export class I18NextBrowser implements I18nPlugin {
 	constructor(protected opt: BDOptions) {
 	}
 	
-	__plugin(options: i18n.Options, use: (module: any) => void) {
+	__plugin(options: i18n.InitOptions, use: (module: any) => void) {
 		use(BrowserDetector);
 		options.detection = {
 			// order and from where user language should be detected

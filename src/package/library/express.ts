@@ -65,7 +65,7 @@ export class I18nExpress implements I18nPlugin {
 		this.attachedExpress = express;
 	}
 	
-	__plugin(options: i18n.Options, use: (module: any) => void) {
+	__plugin(options: i18n.InitOptions, use: (module: any) => void) {
 		use(LanguageDetector);
 		options.detection = {
 			order: ['querystring', 'cookie', 'header'],
@@ -79,7 +79,7 @@ export class I18nExpress implements I18nPlugin {
 		};
 	}
 	
-	__modify(orignal: i18n.I18n, options) {
+	__modify(orignal: i18n.i18n, options) {
 		if (!this.attachedExpress) {
 			throw new Error('I18nExpress: you have not attach the express middleware.');
 		}

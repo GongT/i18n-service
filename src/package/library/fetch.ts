@@ -16,7 +16,7 @@ export class FetchBackend implements I18nPlugin {
 		this.url = url.replace(/\/$/g, '');
 	}
 	
-	__plugin(options: i18n.Options, use: (module: any) => void) {
+	__plugin(options: i18n.InitOptions, use: (module: any) => void) {
 		if (options.backend) {
 			throw new Error("multiple backend found, that's not supported now.");
 		}

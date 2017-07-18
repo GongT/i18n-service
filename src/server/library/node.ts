@@ -15,7 +15,7 @@ export class I18nNodejs implements I18nPlugin {
 		this.localPath = path;
 	}
 	
-	__plugin(options: i18n.Options, use: (module: any) => void) {
+	__plugin(options: i18n.InitOptions, use: (module: any) => void) {
 		if (options.detection) {
 			throw new Error("multiple detector found, that's not supported now.");
 		}

@@ -9,9 +9,9 @@ if (!window.fetch) {
 	alert('your browser is too old. \nno fetch() api.');
 }
 
-export interface ServerOptions extends Partial<i18n.Options> {
+export interface ServerOptions extends Partial<i18n.InitOptions> {
 	list: string[];
-	backend: string;
+	backend: any;
 	detection: BDOptions;
 	// language: string;
 }
@@ -33,6 +33,10 @@ export function createI18n(options: Partial<LanguageConfig> = <any>{}) {
 	
 	const {list, backend, detection, ...languageConfig}: LanguageConfig = detectLanguageConfig(options);
 	console.info('  parsed options: %o', languageConfig);
+	
+	if (typeof backend !== 'string') {
+		throw new TypeError('backend config must be a string');
+	}
 	
 	const i18n = new I18nCreator(languageConfig);
 	
