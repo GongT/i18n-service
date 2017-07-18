@@ -70,7 +70,10 @@ function detectLanguageConfig(options: Partial<LanguageConfig>): LanguageConfig 
 	const getFromServer: any = (GlobalVariable.get(window, 'languageConfigFromServer') || {});
 	console.log('language config from server: %o', getFromServer);
 	
-	const {list, backend, language, projectName, detection, ...serverConfig} = getFromServer;
+	let {list, backend, language, projectName, detection, ...serverConfig} = getFromServer;
+	if (location.protocol === 'https:' && /^http:/.test(backend)) {
+		backend.replace(/^http:/, 'https:');
+	}
 	
 	return {
 		...options,
