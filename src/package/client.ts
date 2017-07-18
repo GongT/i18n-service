@@ -72,7 +72,7 @@ function detectLanguageConfig(options: Partial<LanguageConfig>): LanguageConfig 
 	
 	let {list, backend, language, projectName, detection, ...serverConfig} = getFromServer;
 	if (location.protocol === 'https:' && /^http:/.test(backend)) {
-		backend.replace(/^http:/, 'https:');
+		backend = backend.replace(/^http:/, 'https:');
 	}
 	
 	return {
