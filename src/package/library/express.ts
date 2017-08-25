@@ -1,6 +1,7 @@
+import {createLogger} from "@gongt/ts-stl-library/log/debug";
 import {GlobalVariable} from "@gongt/ts-stl-library/pattern/global-page-data";
-import {createLogger, LEVEL} from "@gongt/ts-stl-server/debug";
 import {RequestContext} from "@gongt/ts-stl-server/express/base/context";
+import {LOG_LEVEL} from "@gongt/ts-stl-server/log/levels";
 import {urlencoded} from "body-parser";
 import {Application, Router} from "express-serve-static-core";
 import * as i18n from "i18next";
@@ -9,7 +10,7 @@ import {getResourcesHandler, handle, LanguageDetector} from "i18next-express-mid
 import {I18nPlugin} from "./base";
 import {CookieOption} from "./browser";
 
-const debug = createLogger(LEVEL.INFO, 'i18n');
+const debug = createLogger(LOG_LEVEL.INFO, 'i18n');
 
 export interface I18nRequest {
 	t: TranslationFunction;

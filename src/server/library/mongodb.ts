@@ -1,9 +1,11 @@
-import {createLogger, LEVEL} from "@gongt/ts-stl-server/debug";
+import {createLogger} from "@gongt/ts-stl-library/log/debug";
+import {LOG_LEVEL} from "@gongt/ts-stl-library/log/levels";
 import * as i18n from "i18next";
 import {I18nPlugin} from "../../package/library/base";
+
 const MongoBackend = require('i18next-node-mongodb-backend');
 
-const debug = createLogger(LEVEL.INFO, 'i18n');
+const debug = createLogger(LOG_LEVEL.INFO, 'i18n');
 
 export class I18nMongodb implements I18nPlugin {
 	constructor(private databaseUrl: string, private collection = 'TranslationResource') {

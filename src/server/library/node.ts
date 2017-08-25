@@ -1,11 +1,12 @@
+import {createLogger} from "@gongt/ts-stl-library/log/debug";
+import {LOG_LEVEL} from "@gongt/ts-stl-library/log/levels";
 import {APP_ROOT_PATH} from "@gongt/ts-stl-server/boot/detect-root";
-import {createLogger, LEVEL} from "@gongt/ts-stl-server/debug";
 import * as i18n from "i18next";
 import * as FsBackend from "i18next-node-fs-backend";
 import {resolve} from "path";
 import {I18nPlugin} from "../../package/library/base";
 
-const debug = createLogger(LEVEL.INFO, 'i18n');
+const debug = createLogger(LOG_LEVEL.INFO, 'i18n');
 
 export class I18nNodejs implements I18nPlugin {
 	constructor(private localPath: string = 'locales') {
