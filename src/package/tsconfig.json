@@ -19,11 +19,9 @@
 		"sourceMap": true,
 		"inlineSources": true,
 		"baseUrl": "../",
-		"typeRoots": [
-			"node_modules/@types"
-		],
-		"types": [
-		],
+		"typeRoots": [],
+		"types": [],
+		"sourceRoot": "/data/node_modules/@gongt/i18n-client",
 		"outDir": "../../dist/npm-package",
 		"rootDir": "./",
 		"paths": {
