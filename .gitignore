@@ -17,6 +17,7 @@ package-lock.json
 dist/
 dist/npm-package/
 public/client/
+!.babelrc
 public/bundles/client.js
 public/bundles/full.js
 public/bundles/dependencies.js

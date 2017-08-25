@@ -1,11 +1,12 @@
+/// <reference path="./.jsonenv/_current_result.json.d.ts"/>
+import {JsonEnv} from "@gongt/jenv-data";
+import {EPlugins, MicroBuildConfig} from "./.micro-build/x/microbuild-config";
 import {MicroBuildHelper} from "./.micro-build/x/microbuild-helper";
-import {MicroBuildConfig, ELabelNames, EPlugins} from "./.micro-build/x/microbuild-config";
-import {JsonEnv} from "./.jsonenv/_current_result";
 declare const build: MicroBuildConfig;
 declare const helper: MicroBuildHelper;
 /*
  +==================================+
- | <**DON'T EDIT ABOVE THIS LINE**> |
+ |  **DON'T EDIT ABOVE THIS LINE**  |
  | THIS IS A PLAIN JAVASCRIPT FILE  |
  |   NOT A TYPESCRIPT OR ES6 FILE   |
  |    ES6 FEATURES NOT AVAILABLE    |

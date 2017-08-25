@@ -87,8 +87,8 @@ export class MainHolder extends StatefulBaseComponent<any, IState> {
 	
 	renderAnyEdit() {
 		return (<div>
-			<div style={{height: '1.5em'}} />
-			<AnyEdit />
+			<div style={{height: '1.5em'}}/>
+			<AnyEdit/>
 			<hr/>
 		</div>);
 	}
@@ -97,6 +97,9 @@ export class MainHolder extends StatefulBaseComponent<any, IState> {
 		return (
 			<div>
 				<div style={parentStyle}>
+					<button onClick={this.refresh}>
+						refresh language list
+					</button>
 					<label htmlFor="selectLang">language:</label>
 					<select
 						disabled={!enabled}
@@ -149,6 +152,16 @@ export class MainHolder extends StatefulBaseComponent<any, IState> {
 			editorReady: false,
 			content: {},
 		});
+	}
+	
+	@BindThis
+	private refresh() {
+		FetchApi(`reload`, {})
+			.then(console.log.bind(console))
+			.then(() => {
+				location.reload(true);
+			})
+			.catch(console.error.bind(console));
 	}
 	
 	@BindThis

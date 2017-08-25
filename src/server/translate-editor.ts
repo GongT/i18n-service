@@ -4,11 +4,12 @@ import {provideWithExpress} from "@gongt/ts-stl-server/express/middlewares/well-
 import {Router} from "express";
 import {Application} from "express-serve-static-core";
 import {i18n} from "i18next";
-import {getLanguageList, getNamespaceList, initDatabase} from "./edit-api/_init";
+import {getLanguageList, getNamespaceList, initDatabase, refresh} from "./edit-api/_init";
 import {lang, LangApi} from "./edit-api/lang";
 import {path, path_del, PathApi} from "./edit-api/path";
 import {read, ReadApi} from "./edit-api/read";
 import {write, WriteApi} from "./edit-api/write";
+
 const basicAuth = require('express-basic-auth');
 
 export function translationRoutes(app: Application, i18n: i18n) {
@@ -55,4 +56,5 @@ export function translationRoutes(app: Application, i18n: i18n) {
 	lang.registerRouter(r);
 	path.registerRouter(r);
 	path_del.registerRouter(r);
+	refresh.registerRouter(r);
 }
