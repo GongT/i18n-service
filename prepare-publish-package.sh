@@ -2,14 +2,15 @@
 set -e
 set -x
 
+ncu -a -u
+cd package-contents/
+ncu -a -u
+cd ..
+
 tsc -p src/server
 tsc -p src/client
 tsc -p src/package
 
 mkdir -p dist/npm-package/
-
-cd package-contents/
-ncu -a -u
-cd ..
 
 cp -rv package-contents/. dist/npm-package/
