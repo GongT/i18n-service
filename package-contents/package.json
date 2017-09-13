@@ -1,14 +1,67 @@
 {
 	"name": "@gongt/i18n-client",
-	"version": "1.2.6",
+	"version": "1.2.7",
+	"main": "./express.js",
 	"description": "",
 	"author": "",
 	"license": "WTFPL",
 	"dependencies": {
-		"@gongt/ts-stl-library": ">=1.5.10",
-		"i18next": "^9.0.0"
+		"@gongt/ts-stl-library": ">=1.5.14",
+		"i18next": "^9.0.0",
+		"i18next-xhr-backend": "^1.4.3"
 	},
 	"devDependencies": {
 		"@types/i18next": "^8.4.2"
+	},
+	"jspm": {
+		"main": "./client",
+		"dependencies": {
+			"i18next-browser-languagedetector": "npm:i18next-browser-languagedetector@^2.0.0",
+			"i18next-xhr-backend": "npm:i18next-xhr-backend@^1.4.3",
+			"isomorphic-fetch": "npm:isomorphic-fetch@^2.2.1"
+		},
+		"devDependencies": {},
+		"peerDependencies": {
+			"assert": "npm:jspm-nodelibs-assert@^0.2.0",
+			"buffer": "npm:jspm-nodelibs-buffer@^0.2.0",
+			"child_process": "npm:jspm-nodelibs-child_process@^0.2.0",
+			"constants": "npm:jspm-nodelibs-constants@^0.2.0",
+			"crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
+			"events": "npm:jspm-nodelibs-events@^0.2.0",
+			"fs": "npm:jspm-nodelibs-fs@^0.2.0",
+			"http": "npm:jspm-nodelibs-http@^0.2.0",
+			"https": "npm:jspm-nodelibs-https@^0.2.0",
+			"os": "npm:jspm-nodelibs-os@^0.2.0",
+			"path": "npm:jspm-nodelibs-path@^0.2.0",
+			"process": "npm:jspm-nodelibs-process@^0.2.0",
+			"stream": "npm:jspm-nodelibs-stream@^0.2.0",
+			"string_decoder": "npm:jspm-nodelibs-string_decoder@^0.2.0",
+			"url": "npm:jspm-nodelibs-url@^0.2.0",
+			"util": "npm:jspm-nodelibs-util@^0.2.0",
+			"vm": "npm:jspm-nodelibs-vm@^0.2.0",
+			"zlib": "npm:jspm-nodelibs-zlib@^0.2.0"
+		},
+		"overrides": {
+			"npm:browserify-zlib@0.1.4": {
+				"dependencies": {
+					"readable-stream": "^2.0.2",
+					"pako": "~0.2.0"
+				},
+				"map": {
+					"_stream_transform": "readable-stream/transform"
+				}
+			},
+			"npm:inherits@2.0.3": {
+				"ignore": [
+					"test.js"
+				]
+			},
+			"npm:pbkdf2@3.0.14": {
+				"main": "browser.js"
+			},
+			"npm:safe-buffer@5.1.1": {
+				"browser": "index.js"
+			}
+		}
 	}
 }
