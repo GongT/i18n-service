@@ -22,3 +22,5 @@ public/bundles/client.js
 public/bundles/full.js
 public/bundles/dependencies.js
 ### <<< END MICRO-BUILD SECTION
+
+package-contents/jspm.config.js
