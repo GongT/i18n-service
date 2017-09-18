@@ -4,6 +4,7 @@ import {RequestError} from "@gongt/ts-stl-library/request/request-error";
 import {JsonApiHandler} from "@gongt/ts-stl-server/express/api-handler";
 import * as i18n from "i18next";
 import {getDatabase, getLanguageList, getNamespaceList, refreshLanguageList} from "./_init";
+
 export const WriteApi = 'write.json';
 
 // write api
@@ -31,7 +32,9 @@ write.setHandler(async (context) => {
 	
 	const ret = await getDatabase().writeKey(lng, ns, path, value);
 	
-	context._request_raw['i18n'].off('languageChanged');
+	if (context._request_raw['i18n']) {
+		context._request_raw['i18n'].off('languageChanged');
+	}
 	i18n['reloadResources'](<any>lng, <any>ns);
 	
 	await refreshLanguageList();

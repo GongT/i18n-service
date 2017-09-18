@@ -117,7 +117,9 @@ export class I18nExpress implements I18nPlugin {
 		
 		this.attachedExpress.get('/_i18n/reload', (req, res, next) => {
 			if (req.query.lng && req.query.ns) {
-				req['i18n'].off('languageChanged');
+				if (req['i18n']) {
+					req['i18n'].off('languageChanged');
+				}
 				orignal['reloadResources'](req.query.lng, req.query.ns);
 				res.header(200).send('OK');
 			} else {

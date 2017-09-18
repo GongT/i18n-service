@@ -55,9 +55,11 @@ export class LanguageDatabase extends DataModel<TranslateResourceDocument> {
 			keyPath = namespace;
 			namespace = 'common';
 		}
+		const ret = {};
 		for (let lng of ls) {
-			await this.writeKey(lng, namespace, keyPath, value);
+			ret[lng] = await this.writeKey(lng, namespace, keyPath, value);
 		}
+		return ret;
 	}
 	
 	async writeKey(language: string, namespace: string, keyPath: string, value: string) {
