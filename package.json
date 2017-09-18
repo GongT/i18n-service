@@ -13,9 +13,9 @@
 	"dependencies": {
 		"@gongt/jenv-data": "^1.2.7",
 		"@gongt/jspm": "^1.0.6",
-		"@gongt/ts-stl-client": "^1.5.15",
-		"@gongt/ts-stl-library": "^1.5.15",
-		"@gongt/ts-stl-server": "^1.5.15",
+		"@gongt/ts-stl-client": ">=1.5.16",
+		"@gongt/ts-stl-library": ">=1.5.16",
+		"@gongt/ts-stl-server": ">=1.5.16",
 		"body-parser": "^1.18.1",
 		"ejs": "^2.5.7",
 		"express": "^4.15.4",
