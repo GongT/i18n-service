@@ -9,7 +9,7 @@
 	"author": "",
 	"license": "WTFPL",
 	"dependencies": {
-		"@gongt/ts-stl-library": ">=1.5.16",
+		"@gongt/ts-stl-library": ">=1.5.18",
 		"i18next": "^9.0.0",
 		"i18next-browser-languagedetector": "^2.0.0",
 		"i18next-xhr-backend": "^1.4.3",
