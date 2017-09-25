@@ -15,7 +15,7 @@ interface LanguageSet extends ApiRequest {
 	path: string;
 }
 
-export const write = new JsonApiHandler<LanguageSet, ApiResponse>(ERequestType.TYPE_POST, '/' + WriteApi);
+export const write = new JsonApiHandler<LanguageSet, ApiResponse&any>(ERequestType.TYPE_POST, '/' + WriteApi);
 write.handleArgument('ns').fromGet().filter((d) => {
 	return getNamespaceList().includes(d);
 });
@@ -35,8 +35,17 @@ write.setHandler(async (context) => {
 	if (context._request_raw['i18n']) {
 		context._request_raw['i18n'].off('languageChanged');
 	}
-	i18n['reloadResources'](<any>lng, <any>ns);
+	
+	let reloadRet: any;
+	try {
+		reloadRet = i18n['reloadResources'](<any>lng, <any>ns);
+	} catch (e) {
+		reloadRet = e;
+	}
 	
 	await refreshLanguageList();
-	return ret;
+	return {
+		ret: ret,
+		reload: reloadRet,
+	};
 });
