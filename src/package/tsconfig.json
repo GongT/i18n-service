@@ -2,7 +2,7 @@
 	"compileOnSave": true,
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es5",
+		"target": "es6",
 		"lib": ["es6", "es5", "es7", "dom"],
 		"moduleResolution": "node",
 		"noEmitOnError": true,
@@ -29,10 +29,5 @@
 			"@gongt/ts-stl-library": ["node_modules/@gongt/ts-stl-library"],
 			"@gongt/ts-stl-server": ["node_modules/@gongt/ts-stl-server"]
 		}
-	},
-	"exclude": [
-		"node_modules",
-		"build.config.ts",
-		"jspm_packages"
-	]
+	}
 }

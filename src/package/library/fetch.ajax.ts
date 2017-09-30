@@ -1,6 +1,11 @@
+import {IS_SERVER, isomorphicGlobal} from "@gongt/ts-stl-library/check-environment";
+import {createLogger} from "@gongt/ts-stl-library/log/debug";
+import {LOG_LEVEL} from "@gongt/ts-stl-library/log/levels";
+import {HTTP} from "@gongt/ts-stl-library/request/request";
+
 // @formatter:off
 // COPY FROM i18next-xhr-backend
-import {IS_SERVER, isomorphicGlobal} from "@gongt/ts-stl-library/check-environment"; var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 function addQueryString(url, params) {
   if (params && (typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
@@ -22,6 +27,10 @@ function addQueryString(url, params) {
   return url;
 }
 // @formatter:on
+
+const debug_fetch = createLogger(LOG_LEVEL.DEBUG, 'i18n.fetch');
+const debug_error = createLogger(LOG_LEVEL.ERROR, 'i18n.fetch');
+const debug_data = createLogger(LOG_LEVEL.DATA, 'i18n.fetch');
 
 const fetcher: AjaxFunction = function (url, options: AjaxFunctionOptions, callback, data, cache) {
 	const init: Partial<RequestInit> = {
@@ -59,16 +68,25 @@ const fetcher: AjaxFunction = function (url, options: AjaxFunctionOptions, callb
 		init.mode = 'no-cors';
 	}
 	
-	// console.log('fetch: %s | %j', url, init)
+	debug_fetch('fetch: %s', url);
+	debug_data(init);
 	fetch(url, init).then(function (res: Response) {
 		if (res.ok) {
 			return res.text().then(function (json) {
 				callback(json, res);
 			});
+		} else {
+			callback(null, res);
 		}
-		
-		return callback(null, res);
-	}, (err) => callback(null, err));
+	}).catch((err) => {
+		if (!err) {
+			err = {};
+		}
+		if (!err.status) {
+			err.status = HTTP.SERVICE_UNAVAILABLE;
+		}
+		callback(null, err)
+	});
 };
 
 let ajaxFunc: AjaxFunction = fetcher;

@@ -6,25 +6,26 @@ import {TranslateResource} from "./defines";
 import {FetchApi} from "./fetch-api";
 import {globalVar} from "./global";
 import {Group} from "./group";
+import {t} from "./index";
 
 const langSelList = [
-	<option value="" selected disabled={true}>--</option>,
+	<option key="-" value="" disabled={true}>--</option>,
 ];
 const textSelList = [
-	<option value="" selected disabled={true}>--</option>,
+	<option key="-" value="" disabled={true}>--</option>,
 ];
 
 (() => {
 	const llist = globalVar.get('languageList');
 	for (let l of llist) {
 		langSelList.push(
-			<option value={l}>{l}</option>,
+			<option key={l} value={l}>{l}</option>,
 		);
 	}
 	const nlist = globalVar.get('namespaceList');
 	for (let n of nlist) {
 		textSelList.push(
-			<option value={n}>{n}</option>,
+			<option key={n} value={n}>{n}</option>,
 		);
 	}
 })();
@@ -86,7 +87,7 @@ export class MainHolder extends StatefulBaseComponent<any, IState> {
 	}
 	
 	renderAnyEdit() {
-		return (<div>
+		return (<div key="any-area">
 			<div style={{height: '1.5em'}}/>
 			<AnyEdit/>
 			<hr/>
@@ -95,16 +96,21 @@ export class MainHolder extends StatefulBaseComponent<any, IState> {
 	
 	renderSelector(enabled: boolean = false) {
 		return (
-			<div>
-				<div style={parentStyle}>
+			<div key="control-area">
+				<div key="actions" style={parentStyle}>
 					<button onClick={this.refresh}>
-						refresh language list
+						{t('refresh language list')}
 					</button>
+					<button onClick={this.reload}>
+						{t('reload language cache')}
+					</button>
+				</div>
+				<div key="select" style={parentStyle}>
 					<label htmlFor="selectLang">language:</label>
 					<select
 						disabled={!enabled}
 						onChange={e => this.setState({'currentLanguage': e.target.value})}
-						id="selectLang" style={optionStyle}>
+						id="selectLang" style={optionStyle} defaultValue="">
 						${langSelList}
 					</select>
 					&nbsp;&nbsp;&nbsp;
@@ -112,7 +118,7 @@ export class MainHolder extends StatefulBaseComponent<any, IState> {
 					<select
 						disabled={!enabled}
 						onChange={e => this.setState({'currentNamespace': e.target.value})}
-						id="selectNamespace" style={optionStyle}>
+						id="selectNamespace" style={optionStyle} defaultValue="">
 						${textSelList}
 					</select>
 					&nbsp;&nbsp;&nbsp;
@@ -157,6 +163,16 @@ export class MainHolder extends StatefulBaseComponent<any, IState> {
 	@BindThis
 	private refresh() {
 		FetchApi(`reload`, {})
+			.then(console.log.bind(console))
+			.then(() => {
+				location.reload(true);
+			})
+			.catch(console.error.bind(console));
+	}
+	
+	@BindThis
+	private reload() {
+		FetchApi(`/_i18n/reload`, {})
 			.then(console.log.bind(console))
 			.then(() => {
 				location.reload(true);

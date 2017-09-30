@@ -27,7 +27,7 @@ build.npmInstall('./package.json', ['make', 'g++', 'python']);
 build.forceLocalDns(true);
 
 build.forwardPort(80, 'tcp');
-build.listenPort(3818);
+build.listenPort(JsonEnv.translation.debugPort);
 
 build.startupCommand('./node_modules/.bin/ts-app-loader');
 build.shellCommand('/usr/local/bin/node');

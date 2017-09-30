@@ -34,7 +34,7 @@ export function initDatabase() {
 	waitDatabaseToConnect().then(refreshLanguageList);
 }
 
-export const refresh = new JsonApiHandler<ApiRequest, ApiResponse>(ERequestType.TYPE_POST, '/reload');
+export const refresh = new JsonApiHandler<ApiRequest, ApiResponse>(ERequestType.TYPE_GET, '/reload');
 refresh.setHandler(async (context) => {
 	await refreshLanguageList();
 	return {};

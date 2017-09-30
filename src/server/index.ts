@@ -4,16 +4,16 @@ import {bootExpressApp} from "@gongt/ts-stl-server/boot/express-init";
 import {initServiceWait} from "@gongt/ts-stl-server/boot/init-systemd-service";
 import {CrossDomainMiddleware} from "@gongt/ts-stl-server/communication/crossdomain/middleware";
 import {initDefaultDatabaseConnection, waitDatabaseToConnect} from "@gongt/ts-stl-server/database/mongodb";
+import {provideWithExpress} from "@gongt/ts-stl-server/express/middlewares/well-known-provider";
 import * as express from "express";
 import {Request} from "express-serve-static-core";
 import * as logger from "morgan";
-import {I18nCreator, LanguageList} from "../package/library/base";
-import {I18nExpress, I18nRequest} from "../package/library/express";
-import {I18nMongodb} from "./library/mongodb";
+import {I18nExpress, I18nRequest} from "../package/express/index";
+import {LocalTranslateService} from "./library/local-service";
 import {translationRoutes} from "./translate-editor";
 
-const databaseUrl = JsonEnv.DataBaseUrlTemplate.replace('%DATABASE-NAME%', 'Translation');
-initDefaultDatabaseConnection(databaseUrl);
+export const i18nDatabaseUrl = JsonEnv.DataBaseUrlTemplate.replace('%DATABASE-NAME%', 'Translation');
+initDefaultDatabaseConnection(i18nDatabaseUrl);
 
 const cors = new CrossDomainMiddleware;
 cors.allowCredentials(true);
@@ -25,36 +25,29 @@ app.use(logger(':method :url :status - :response-time ms'));
 
 app.use(cors.getMiddleware());
 
-const i18n = new I18nCreator({
+const i18n = new LocalTranslateService({
 	debug: false,
+	remoteUrl: JsonEnv.DataBaseUrlTemplate.replace('%DATABASE-NAME%', 'Translation'),
 });
+const instance = i18n.instance(process.env.PROJECT_NAME);
 
-i18n.use(new LanguageList(JsonEnv.translation.langList));
-i18n.use(new I18nMongodb(databaseUrl));
-
-const iexp = new I18nExpress({
-	ignoreRoutes: [
-		'/editor',
-		'/public',
-	],
-}, {
-	list: JsonEnv.translation.langList,
-	backend: databaseUrl,
-});
-iexp.attach(app);
-i18n.use(iexp);
-
-const n = i18n.createInstance();
+provideWithExpress(app, new I18nExpress(instance, {
+	app: {
+		ignoreRoutes: [
+			'/public',
+		],
+	},
+}));
 
 app.get('/', (req: Request&I18nRequest, res) => {
-	res.send(`<h1>${req.t('xxx')}</h1>`)
+	res.send(`<h1>translate test: ${req.t('xxx')}</h1>`)
 });
 
-translationRoutes(app, n);
+translationRoutes(app, instance);
 
 const p = Promise.all([
 	waitDatabaseToConnect(),
-	i18n.waitComplete(),
+	instance.wait,
 ]).then(() => {
 	return bootExpressApp(app);
 });

@@ -12,5 +12,5 @@ mkdir -p dist/npm-package/
 cp -rv package-contents/. dist/npm-package/
 
 tsc -p src/server
-tsc -p src/client
 tsc -p src/package
+tsc -p src/client

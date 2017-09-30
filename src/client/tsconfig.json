@@ -18,7 +18,7 @@
 		"pretty": true,
 		"sourceMap": true,
 		"inlineSources": true,
-		"baseUrl": "../",
+		"baseUrl": "../../",
 		"typeRoots": [],
 		"types": [],
 		"sourceRoot": "/client",
@@ -27,7 +27,8 @@
 		"jsx": "react",
 		"paths": {
 			"@gongt/ts-stl-client": ["node_modules/@gongt/ts-stl-client"],
-			"@gongt/ts-stl-library": ["node_modules/@gongt/ts-stl-library"]
+			"@gongt/ts-stl-library": ["node_modules/@gongt/ts-stl-library"],
+			"@gongt/i18n-client": ["dist/npm-package"]
 		}
 	},
 	"exclude": []

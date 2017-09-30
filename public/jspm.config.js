@@ -1,8 +1,5 @@
 SystemJS.config({
 	baseURL: "/public",
-	paths: {
-		"client/": "client/"
-	},
 	transpiler: false,
 	packages: {
 		"client": {
@@ -10,4 +7,10 @@ SystemJS.config({
 			"format": "cjs"
 		}
 	}
+});
+
+SystemJS.config({
+	packageConfigPaths: [],
+	map: {},
+	packages: {}
 });
