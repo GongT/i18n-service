@@ -26,7 +26,7 @@ app.use(logger(':method :url :status - :response-time ms'));
 app.use(cors.getMiddleware());
 
 const i18n = new LocalTranslateService({
-	debug: false,
+	debug: true,
 	remoteUrl: JsonEnv.DataBaseUrlTemplate.replace('%DATABASE-NAME%', 'Translation'),
 });
 const instance = i18n.instance(process.env.PROJECT_NAME);

@@ -54,8 +54,12 @@ const fetcher: AjaxFunction = function (url, options: AjaxFunctionOptions, callb
 		if (!init.headers) {
 			init.headers = {};
 		}
-		init.body = addQueryString('', data).substr(1);
-		init.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
+		if (typeof data === 'string') {
+			init.body = data;
+		} else {
+			init.body = addQueryString('', data).substr(1);
+			init.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
+		}
 	} else {
 		init.method = 'GET';
 	}
@@ -76,6 +80,7 @@ const fetcher: AjaxFunction = function (url, options: AjaxFunctionOptions, callb
 				callback(json, res);
 			});
 		} else {
+			debug_error('load failed, HTTP status: %s %s', res.status, res.statusText);
 			callback(null, res);
 		}
 	}).catch((err) => {
@@ -85,6 +90,7 @@ const fetcher: AjaxFunction = function (url, options: AjaxFunctionOptions, callb
 		if (!err.status) {
 			err.status = HTTP.SERVICE_UNAVAILABLE;
 		}
+		debug_error('load failed: %s', err.message);
 		callback(null, err)
 	});
 };

@@ -1,8 +1,15 @@
+import {createLogger} from "@gongt/ts-stl-library/log/debug";
+import {LOG_LEVEL} from "@gongt/ts-stl-library/log/levels";
 import {EBodyType} from "@gongt/ts-stl-library/request/request";
 import {initBodyParser} from "@gongt/ts-stl-server/express/base/body-parser";
 import {Application, Router} from "express-serve-static-core";
 import {i18n} from "i18next";
+import * as request from "request-promise-native"
 import {CreatorInfo, I18nObject} from "../def";
+
+const debug_reload = createLogger(LOG_LEVEL.DEBUG, 'i18n.reload');
+const data_reload = createLogger(LOG_LEVEL.DATA, 'i18n.reload');
+const error_reload = createLogger(LOG_LEVEL.ERROR, 'i18n.reload');
 
 export function attachReloadRoute(app: Router|Application, i18n: I18nObject, root: string = '/') {
 	let nsList = ['common', process.env.PROJECT_NAME];
@@ -44,8 +51,26 @@ export function attachReloadRoute(app: Router|Application, i18n: I18nObject, roo
 		res.header('Content-Type', 'text/html; charset=utf8').send(html);
 	});
 	app.post('/_i18n/reload', initBodyParser(EBodyType.TYPE_ENCODE), (req, res, next) => {
-		if (req.body.lng && req.body.ns) {
-			// console.log(req['i18n'], i18n);
+		(async function () {
+			if (!req.body.lng || !req.body.ns) {
+				throw {
+					code: 400,
+					message: 'input invalid',
+				};
+			}
+			
+			if (process.env.PROJECT_NAME !== 'i18n') {
+				debug_reload('refresh remote resource storage');
+				const remoteReloadResult = await request({
+					baseUrl: i18n.extraInfo.remoteUrl,
+					uri: req.originalUrl,
+					form: req.body,
+					method: 'POST',
+				});
+				console.log(remoteReloadResult)
+			}
+			
+			debug_reload('refresh local resource storage');
 			if (req['i18n']) {
 				req['i18n'].off('languageChanged');
 			}
@@ -58,9 +83,12 @@ export function attachReloadRoute(app: Router|Application, i18n: I18nObject, roo
 				i18n['store'].addNamespaces(n);
 			}
 			i18n.reloadResources(lng, ns);
-			res.status(200).send('OK');
-		} else {
-			res.status(400).send('INPUT');
-		}
+		})().then((ok) => {
+			debug_reload('complete!');
+			res.status(200).send('reload complete.');
+		}, (e) => {
+			error_reload('failed: ', e? e.message : '{*no info*}');
+			res.status(e && e.code || 500).send('FAIL: ' + e? e.message : '???');
+		});
 	});
 }

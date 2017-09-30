@@ -53,8 +53,7 @@ export interface CreatorInfo {
 	detect: DetectOptions;
 	nsList: string[];
 	lngList: string[];
-	detectCookieName: string;
-	detectCookieDomain: string;
+	remoteUrl: string;
 }
 
 export interface I18nObject extends i18n {

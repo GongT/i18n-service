@@ -4,6 +4,7 @@ import * as i18n from "i18next";
 import {DetectorOptionsServer, ITranslationServiceConfig, ITranslationServiceData} from "package/def";
 
 const ps: Promise<i18n.TranslationFunction[]>[] = [];
+export const isSelfDebugging = process.env.I18N_PACKAGE_DEBUG || (process.env.PROJECT_NAME === 'i18n' && !process.env.RUN_IN_DOCKER);
 
 export function detectServerConfig(options: Partial<ITranslationServiceConfig>): ITranslationServiceData<DetectorOptionsServer> {
 	const ret: ITranslationServiceData<DetectorOptionsServer> = {
@@ -36,15 +37,15 @@ export function detectServerConfig(options: Partial<ITranslationServiceConfig>):
 	ret.langList = JsonEnv.translation.langList;
 	
 	alertJenv(ret, 'remoteUrl');
-	ret.remoteUrl = JsonEnv.translation.serverUrl;
-	if (!ret.remoteUrl) {
+	if (isSelfDebugging) { // debugging myself
+		ret.remoteUrl = `http://127.0.0.1:${JsonEnv.translation.debugPort}`;
+	} else if (JsonEnv.translation.serverUrl) {
+		ret.remoteUrl = JsonEnv.translation.serverUrl
+	} else {
 		ret.remoteUrl = 'http://i18n.' + JsonEnv.baseDomainName;
-		if (process.env.I18N_PACKAGE_DEBUG || (process.env.PROJECT_NAME === 'i18n' && !process.env.RUN_IN_DOCKER)) {
-			// debugging myself
-			ret.remoteUrl += `:${JsonEnv.translation.debugPort}/`;
-		} else {
-			ret.remoteUrl += '/'
-		}
+	}
+	if (/\/$/.test(ret.remoteUrl)) {
+		ret.remoteUrl = ret.remoteUrl.replace(/\/$/g, '');
 	}
 	
 	if (!ret.debug) {

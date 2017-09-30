@@ -6,8 +6,8 @@ import {ajax} from "./fetch.ajax";
 
 export function processBackend(config: InitOptions, remote: string) {
 	config.backend = {
-		loadPath: remote + '?ns={{ns}}&lng={{lng}}',
-		addPath: remote + '?ns={{ns}}&lng={{lng}}',
+		loadPath: remote + '/_i18n/resources.json?ns={{ns}}&lng={{lng}}',
+		addPath: remote + '/_i18n/resources.json?ns={{ns}}&lng={{lng}}',
 		allowMultiLoading: true,
 		ajax: ajax,
 		crossDomain: true,

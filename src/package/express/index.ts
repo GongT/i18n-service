@@ -24,9 +24,10 @@ export class I18nExpress implements IExpressProvide {
 		this.root = config.root || '/';
 	}
 	
-	__express_provide(app: Application|Router): void {
+	__express_provide(app: Application|Router): Promise<any> {
 		attachReloadRoute(app, this.i18n, this.root);
 		attachMainRoute(app, this.config.app || {}, this.i18n, this.root);
 		attachLocalProviderRoute(app, this.i18n, this.root);
+		return this.i18n.wait;
 	}
 }

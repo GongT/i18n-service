@@ -16,7 +16,7 @@ export function detectClientConfig(options: Partial<ITranslationServiceConfig>):
 			options.remoteUrl = options.remoteUrl.replace(/^http:/, 'https:');
 		}
 	} else {
-		options.remoteUrl = location.origin + '/_i18n/resources.json';
+		options.remoteUrl = location.origin;
 	}
 	
 	const ret: ITranslationServiceData<DetectorOptionsClient> = {

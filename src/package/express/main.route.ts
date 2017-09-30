@@ -2,6 +2,7 @@ import {GlobalVariable} from "@gongt/ts-stl-library/pattern/global-page-data";
 import {Application, Router} from "express-serve-static-core";
 import {handle} from "i18next-express-middleware";
 import {I18nObject, ITranslationConfigPassing} from "../def";
+import {isSelfDebugging} from "../library/options.express";
 
 export interface I18nExtendConfig {
 	debug?: boolean;
@@ -21,8 +22,8 @@ export function attachMainRoute(app: Router|Application,
 		removeLngFromUrl: true,
 	}, options, {
 		cookie: {
-			name: i18n.extraInfo.detectCookieName,
-			domain: i18n.extraInfo.detectCookieDomain,
+			name: i18n.extraInfo.detect.cookieName,
+			domain: i18n.extraInfo.detect.cookieDomain,
 		},
 	});
 	
@@ -34,7 +35,7 @@ export function attachMainRoute(app: Router|Application,
 			const passVal = new GlobalVariable(res);
 			
 			passVal.set('languageConfigFromServer', <ITranslationConfigPassing>{
-				remoteUrl: null,
+				remoteUrl: isSelfDebugging? null : i18n.extraInfo.remoteUrl,
 				langList: i18n.extraInfo.lngList,
 				language: req.language,
 				detect: i18n.extraInfo.detect,

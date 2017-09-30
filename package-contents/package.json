@@ -1,6 +1,6 @@
 {
 	"name": "@gongt/i18n-client",
-	"version": "1.4.1",
+	"version": "1.5.0",
 	"main": "./index.js",
 	"description": "",
 	"author": "",
@@ -12,12 +12,17 @@
 		"i18next-xhr-backend": "^1.4.3",
 		"i18next-express-middleware": "^1.0.6",
 		"node-fetch": "^1.7.3",
-		"whatwg-fetch": "^2.0.3"
+		"whatwg-fetch": "^2.0.3",
+		"request-promise-native": "^1.0.5",
+		"request": "^2.83.0"
 	},
 	"devDependencies": {
 		"@types/i18next": "^8.4.2"
 	},
 	"jspm": {
+		"ignore": [
+			"./express"
+		],
 		"dependencies": {
 			"i18next": "latest",
 			"i18next-browser-languagedetector": "latest",
@@ -31,7 +36,9 @@
 			"node-fetch": "@empty",
 			"i18next-express-middleware": "@empty",
 			"@gongt/jenv-data": "@empty",
-			"./library/options.express": "@empty"
+			"./library/options.express": "@empty",
+			"request-promise-native": "@empty",
+			"request": "@empty"
 		}
 	}
 }

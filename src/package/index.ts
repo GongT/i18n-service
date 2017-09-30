@@ -93,9 +93,8 @@ export class TranslateService {
 		const extraInfo: CreatorInfo = {
 			nsList: config.ns.slice(),
 			lngList: this.options.langList,
-			detectCookieName: this.options.detection.lookupCookie,
-			detectCookieDomain: this.options.detection.cookieDomain,
 			detect: this.inputConfig.detect,
+			remoteUrl: this.options.remoteUrl,
 		};
 		Object.defineProperty(ret, 'extraInfo', {
 			value: extraInfo,
