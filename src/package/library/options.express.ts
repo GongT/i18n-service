@@ -33,10 +33,10 @@ export function detectServerConfig(options: Partial<ITranslationServiceConfig>):
 		ret.detection.lookupCookie = options.detect.cookieName;
 	}
 	
-	alertJenv(ret, 'langList');
+	alertJenv(options, 'langList');
 	ret.langList = JsonEnv.translation.langList;
 	
-	alertJenv(ret, 'remoteUrl');
+	alertJenv(options, 'remoteUrl');
 	if (isSelfDebugging) { // debugging myself
 		ret.remoteUrl = `http://127.0.0.1:${JsonEnv.translation.debugPort}`;
 	} else if (JsonEnv.translation.serverUrl) {
