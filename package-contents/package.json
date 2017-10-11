@@ -7,7 +7,7 @@
 	"license": "WTFPL",
 	"dependencies": {
 		"@types/i18next": "^8.4.2",
-		"@gongt/ts-stl-library": ">=1.5.20",
+		"@gongt/ts-stl-library": ">=1.5.23",
 		"i18next": "^10.0.1",
 		"i18next-browser-languagedetector": "^2.0.0",
 		"i18next-xhr-backend": "^1.4.3",
